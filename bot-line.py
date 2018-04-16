@@ -126,7 +126,7 @@ def reply(message):
     if result is None:
         return None
     else:
-        return jsonify(result)
+        result[2]
 
 
 def getOilPrice():
