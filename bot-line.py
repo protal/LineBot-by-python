@@ -90,9 +90,9 @@ def saveMessage():
         flash(u'Edit message success', 'success')
         return redirect(url_for('manage'))
         
-        
-    
 
+
+    
 
 
 # - manage
@@ -117,6 +117,18 @@ def callback():
     return 'OK'
 
 
+def reply(message):
+    conn = mysql.connect()
+    cur = conn.cursor()
+    cur.execute('''SELECT * FROM Message where message = %s''', (message))
+    result = cur.fetchone()
+    conn.close()
+    if result is None:
+        return None
+    else:
+        return jsonify(result)
+
+
 def getOilPrice():
     sendMessage = "น้องซอฟไปหาข้อมูลราคาน้ำมันจากเว็บ ptt ให้เเล้วน้าาา \n"
     client = Client('http://www.pttplc.com/webservice/pttinfo.asmx?WSDL')
@@ -135,8 +147,12 @@ def handle_message(event):
     if event.message.text == unicode('เช็คราคาน้ำมัน', 'utf-8'): 
         sendMessage = unicode(getOilPrice(), 'utf-8')
     else : 
-        sendMessage = unicode('น้องซอฟไม่เข้าใจคำว่า ', 'utf-8')
-        sendMessage = sendMessage+event.message.text
+        replymessage = reply(event.message.text)
+        if replymessage != None:
+            sendMessage = replymessage
+        else :
+            sendMessage = unicode('น้องซอฟไม่เข้าใจคำว่า ', 'utf-8')
+            sendMessage = sendMessage+event.message.text
         
     line_bot_api.reply_message(
         event.reply_token,
