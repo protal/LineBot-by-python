@@ -130,7 +130,7 @@ def reply(message):
         return result[2]
 
 def saveReply(message,reply,userID):
-    print(userID)
+    print(userID["userId"])
     profile = line_bot_api.get_profile(userID)
     saveName = profile.user_id+"||"+profile.display_name
     conn = mysql.connect()
