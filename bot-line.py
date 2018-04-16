@@ -120,13 +120,24 @@ def callback():
 def reply(message):
     conn = mysql.connect()
     cur = conn.cursor()
-    cur.execute('''SELECT * FROM Message where message = %s''', (message))
+    cur.execute(
+        '''SELECT * FROM Message where message = %s ORDER BY rand() LIMIT 1''', (message))
     result = cur.fetchone()
     conn.close()
     if result is None:
         return None
     else:
         return result[2]
+
+def saveReply(message,reply,userID):
+    profile = line_bot_api.get_profile(user_id)
+    saveName = profile.user_id+"||"+profile.display_name
+    conn = mysql.connect()
+    cur = conn.cursor()
+    cur.execute('''INSERT INTO Message (message, reply,created_by, created_at,updated_at)VALUES (%s,%s, now(),now())''',
+                (message, reply, saveName))
+    conn.commit()
+    conn.close()
 
 
 def getOilPrice():
@@ -146,6 +157,11 @@ def getOilPrice():
 def handle_message(event):
     if event.message.text == unicode('เช็คราคาน้ำมัน', 'utf-8'): 
         sendMessage = unicode(getOilPrice(), 'utf-8')
+    if "==" in event.message.text:
+        text = event.message.text.split("==")
+        message = text[0]
+        reply = text[1]
+        saveReply(message, reply, event.source.userId)
     else : 
         replymessage = reply(event.message.text)
         if replymessage != None:
