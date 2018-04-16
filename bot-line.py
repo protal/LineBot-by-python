@@ -130,6 +130,7 @@ def reply(message):
         return result[2]
 
 def saveReply(message,reply,userID):
+    print(userID)
     profile = line_bot_api.get_profile(userID)
     saveName = profile.user_id+"||"+profile.display_name
     conn = mysql.connect()
@@ -155,14 +156,13 @@ def getOilPrice():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    print(event.source)
     if event.message.text == unicode('เช็คราคาน้ำมัน', 'utf-8'): 
         sendMessage = unicode(getOilPrice(), 'utf-8')
     elif "==" in event.message.text:
         text = event.message.text.split("==")
         message = text[0]
         replymessage = text[1]
-        saveReply(message, replymessage, event.source.userid)
+        saveReply(message, replymessage, event.source)
         sendMessage = unicode('ขอบคุณครับที่ช่วยสอนน้องซอฟ', 'utf-8')
     else : 
         replymessage = reply(event.message.text)
