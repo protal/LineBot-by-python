@@ -126,7 +126,7 @@ def reply(message):
     if result is None:
         return None
     else:
-        result[2]
+        return result[2]
 
 
 def getOilPrice():
