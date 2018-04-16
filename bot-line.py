@@ -155,6 +155,7 @@ def getOilPrice():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    print(event)
     if event.message.text == unicode('เช็คราคาน้ำมัน', 'utf-8'): 
         sendMessage = unicode(getOilPrice(), 'utf-8')
     if "==" in event.message.text:
@@ -162,6 +163,7 @@ def handle_message(event):
         message = text[0]
         reply = text[1]
         saveReply(message, reply, event.source.userId)
+        sendMessage = unicode('ขอบคุณครับที่ช่วยสอนน้องซอฟ', 'utf-8'):
     else : 
         replymessage = reply(event.message.text)
         if replymessage != None:
