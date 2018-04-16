@@ -162,7 +162,7 @@ def handle_message(event):
         text = event.message.text.split("==")
         message = text[0]
         replymessage = text[1]
-        saveReply(message, replymessage, event.source.userId)
+        saveReply(message, replymessage, event.source.userid)
         sendMessage = unicode('ขอบคุณครับที่ช่วยสอนน้องซอฟ', 'utf-8')
     else : 
         replymessage = reply(event.message.text)
