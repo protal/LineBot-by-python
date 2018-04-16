@@ -155,7 +155,7 @@ def getOilPrice():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    print(event)
+    print(event.source)
     if event.message.text == unicode('เช็คราคาน้ำมัน', 'utf-8'): 
         sendMessage = unicode(getOilPrice(), 'utf-8')
     elif "==" in event.message.text:
