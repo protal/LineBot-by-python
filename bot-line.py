@@ -134,7 +134,7 @@ def saveReply(message,reply,userID):
     saveName = profile.user_id+"||"+profile.display_name
     conn = mysql.connect()
     cur = conn.cursor()
-    cur.execute('''INSERT INTO Message (message, reply,created_by, created_at,updated_at)VALUES (%s,%s, now(),now())''',
+    cur.execute('''INSERT INTO Message (message, reply,created_by, created_at,updated_at)VALUES (%s,%s,%s,now(),now())''',
                 (message, reply, saveName))
     conn.commit()
     conn.close()
