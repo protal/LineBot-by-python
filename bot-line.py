@@ -158,7 +158,7 @@ def handle_message(event):
     print(event)
     if event.message.text == unicode('เช็คราคาน้ำมัน', 'utf-8'): 
         sendMessage = unicode(getOilPrice(), 'utf-8')
-    if "==" in event.message.text:
+    elif "==" in event.message.text:
         text = event.message.text.split("==")
         message = text[0]
         reply = text[1]
