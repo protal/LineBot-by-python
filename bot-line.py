@@ -133,7 +133,7 @@ def saveReply(message,reply,userID):
     try:
         profile = line_bot_api.get_profile(userID)
     except:
-        saveName = profile.user_id+"||UNKNOW"
+        saveName = userID+"||UNKNOW"
     finally:
         saveName = profile.user_id+"||"+profile.display_name
     conn = mysql.connect()
