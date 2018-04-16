@@ -130,8 +130,12 @@ def reply(message):
         return result[2]
 
 def saveReply(message,reply,userID):
-    profile = line_bot_api.get_profile(userID)
-    saveName = profile.user_id+"||"+profile.display_name
+    try:
+        profile = line_bot_api.get_profile(userID)
+    except:
+        saveName = profile.user_id+"||UNKNOW"
+    finally:
+        saveName = profile.user_id+"||"+profile.display_name
     conn = mysql.connect()
     cur = conn.cursor()
     cur.execute('''INSERT INTO Message (message, reply,created_by, created_at,updated_at)VALUES (%s,%s,%s,now(),now())''',
