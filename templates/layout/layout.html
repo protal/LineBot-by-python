@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Linebot manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+</head>
+
+<body>
+    <section class="hero is-dark">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    LineBot Manager
+                </h1>
+                <h5 class="subtitle">
+                    จัดการการตอบกลับข้อความอัตโนมัติ
+                </h5>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %} 
+            {% if messages %}
+                    {% for category, message in messages %}
+                    
+                    <div class="notification is-{{ category }}" style="margin-top: 30px">
+                            <button class="delete"></button>
+                            {{ message }}
+                          </div>
+                    {% endfor %}
+            {% endif %} 
+        {% endwith %} 
+        {% block body %}{% endblock %}
+    </div>
+    <footer style="margin-top: 30px">
+        <div class="container">
+            <div class="content">
+                <p>
+                    <strong>LineBot Manager</strong> by Protal-design , bulma
+                </p>
+            </div>
+        </div>
+    </footer>
+    {% block modal %}{% endblock %}
+    <script>
+        // Modals
+        function getAll(selector) {
+            return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
+        }
+        var rootEl = document.documentElement;
+        var $modals = getAll('.modal');
+        var $modalButtons = getAll('.modal-button');
+        var $modalCloses = getAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button');
+        // Functions
+        if ($modalCloses.length > 0) {
+            $modalCloses.forEach(function ($el) {
+                $el.addEventListener('click', function () {
+                    closeModals();
+                });
+            });
+        }
+
+        function openModal(target) {
+            var $target = document.getElementById(target);
+            rootEl.classList.add('is-clipped');
+            $target.classList.add('is-active');
+        }
+
+        function closeModals() {
+            rootEl.classList.remove('is-clipped');
+            $modals.forEach(function ($el) {
+                $el.classList.remove('is-active');
+            });
+        }
+        document.addEventListener('keydown', function (event) {
+            var e = event || window.event;
+            if (e.keyCode === 27) {
+                closeModals();
+            }
+        });
+
+
+    </script> {% block js %}{% endblock %}
+
+</body>
+
+</html>

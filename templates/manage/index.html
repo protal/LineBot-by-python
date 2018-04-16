@@ -1,0 +1,145 @@
+{% extends "layout/layout.html" %} {% block body %}
+<br>
+<div class="field is-grouped">
+    <p class="control is-expanded">
+        <input class="input " type="text" placeholder="Text input">
+    </p>
+    <p class="control">
+        <a class="button is-info">
+            Search
+        </a>
+    </p>
+    <p class="control">
+        <a class="button is-success" onclick="javascript:showNewModal()">
+            <span class="icon is-small">
+                <i class="fas fa-plus"></i>
+            </span>
+            &nbsp; New Message
+        </a>
+    </p>
+</div>
+<br>
+<table class="table is-striped is-fullwidth">
+    <thead>
+        <tr>
+            <th>Message</th>
+            <th>Reply</th>
+            <th>used count</th>
+            <th>created by </th>
+            <th>Manage</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for m in Messages %}
+        <tr>
+            <td>{{m[1]}}</td>
+            <td>{{m[2]}}</td>
+            <td>{{m[4]}}</td>
+            <td>{{ m[3] if m[3] != None else 'web manage' }}</td>
+            <td>
+                <button class="button is-warning Message-edit" onclick="javascript:showEditModal( {{m[0]}} )">
+                    <span class="icon is-small">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                    &nbsp; Edit
+                </button>
+                <a href="/manage/message/{{m[0]}}/delete" class="button is-danger">
+                    <span class="icon is-small">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    &nbsp; Delete
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+    <a class="pagination-previous">Previous</a>
+    <a class="pagination-next">Next page</a>
+    <ul class="pagination-list">
+        <li>
+            <a class="pagination-link" aria-label="Goto page 1">1</a>
+        </li>
+        <li>
+            <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+        <li>
+            <a class="pagination-link" aria-label="Goto page 45">45</a>
+        </li>
+        <li>
+            <a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a>
+        </li>
+        <li>
+            <a class="pagination-link" aria-label="Goto page 47">47</a>
+        </li>
+        <li>
+            <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+        <li>
+            <a class="pagination-link" aria-label="Goto page 86">86</a>
+        </li>
+    </ul>
+</nav>
+
+{% endblock %} {% block modal %}
+<div class="modal" id="modal">
+    <form action="/manage/save" method="post">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Edit Message</p>
+                <button class="delete" type="button" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                <input type="hidden" name="message-id" id="message-id">
+                <div class="field">
+                    <label class="label">Message</label>
+                    <div class="control">
+                        <input class="input" type="text" name="message" id="message" placeholder="Receive message">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Replay</label>
+                    <div class="control">
+                        <input class="input" type="text" name="reply" id="reply" placeholder="Reply massage">
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success" type="submit">Save changes</button>
+                <button class="button" type="reset">Cancel</button>
+            </footer>
+        </div>
+    </form>
+</div>
+
+{% endblock %} {% block js %}
+<script>
+    async function showNewModal() {
+        document.getElementById('message').value = ""
+        document.getElementById('reply').value = ""
+        document.getElementById('message-id').value = ""
+        openModal("modal");
+    }
+    async function showEditModal(id) {
+        try {
+            console.log("start f`etch");
+            let response = await fetch('/manage/message/' + id, {
+                method: 'get'
+            })
+            let result = await response.json()
+            document.getElementById('message').value = result[1]
+            document.getElementById('reply').value = result[2]
+            document.getElementById('message-id').value = id
+            openModal("modal");
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+</script> {% endblock %}
