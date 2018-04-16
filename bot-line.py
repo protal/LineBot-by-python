@@ -158,11 +158,12 @@ def handle_message(event):
     if event.message.text == unicode('เช็คราคาน้ำมัน', 'utf-8'): 
         sendMessage = unicode(getOilPrice(), 'utf-8')
     elif "==" in event.message.text:
+        sendMessage = unicode('ขอบคุณครับที่ช่วยสอนน้องซอฟ', 'utf-8')
         text = event.message.text.split("==")
+        print(text)
         message = text[0]
         replymessage = text[1]
         saveReply(message, replymessage, event.source.user_id)
-        sendMessage = unicode('ขอบคุณครับที่ช่วยสอนน้องซอฟ', 'utf-8')
     else : 
         replymessage = reply(event.message.text)
         if replymessage != None:
