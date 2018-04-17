@@ -196,7 +196,9 @@ def handle_message(event):
             sendMessage = replymessage
         else :
             sendMessage = bot.get_response(event.message.text)
-        
+    
+    print(sendMessage)
+
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=sendMessage))
