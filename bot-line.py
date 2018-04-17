@@ -14,6 +14,9 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
 
+from chatterbot import ChatBot
+
+
 # xml
 from zeep import Client
 from lxml import etree
@@ -34,6 +37,25 @@ app.config['MYSQL_DATABASE_PASSWORD'] = config.db['password']
 app.config['MYSQL_DATABASE_DB'] = config.db['db']
 app.config['MYSQL_DATABASE_HOST'] = config.db['host']
 mysql = MySQL(app)
+
+bot = ChatBot(
+    u"น้องซอฟ",
+    storage_adapter="chatterbot.storage.SQLStorageAdapter",
+    logic_adapters=[
+        {
+            'import_path': 'chatterbot.logic.BestMatch'
+        },
+        {
+            'import_path': 'chatterbot.logic.LowConfidenceAdapter',
+            'threshold': 0.80,
+            'default_response': 'น้องซอฟไม่เข้าใจ'
+        }
+    ],
+    input_adapter="chatterbot.input.VariableInputTypeAdapter",
+    output_adapter="chatterbot.output.OutputAdapter",
+    output_format="text",
+    database="./database.db"
+)
 
 
 @app.route("/")
@@ -173,8 +195,7 @@ def handle_message(event):
         if replymessage != None:
             sendMessage = replymessage
         else :
-            sendMessage = unicode('น้องซอฟไม่เข้าใจคำว่า ', 'utf-8')
-            sendMessage = sendMessage+event.message.text
+            sendMessage = bot.get_response(event.message.text)
         
     line_bot_api.reply_message(
         event.reply_token,
