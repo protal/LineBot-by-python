@@ -195,7 +195,8 @@ def handle_message(event):
         if replymessage != None:
             sendMessage = replymessage
         else :
-            print(bot.get_response(event.message.text).text.encode('utf-8'))
+            sendMessage = bot.get_response(
+                event.message.text).text.encode('utf-8')
     
     print(sendMessage)
 
