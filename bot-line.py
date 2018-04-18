@@ -196,6 +196,7 @@ def handle_message(event):
             sendMessage = replymessage
         else :
             sendMessage = bot.get_response(event.message.text)
+            sendMessage = u' '.join(sendMessage).encode('utf-8').strip()
             print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", sendMessage)
     
     print(sendMessage)
