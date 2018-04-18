@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 import config
 from flask import Flask,redirect,url_for,flash, request, abort, render_template , jsonify
 from flask.ext.mysql import MySQL
@@ -195,7 +195,7 @@ def handle_message(event):
         if replymessage != None:
             sendMessage = replymessage
         else :
-            print(bot.get_response(event.message.text))
+            print(bot.get_response(event.message.text).text.encode('utf-8'))
     
     print(sendMessage)
 
