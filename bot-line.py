@@ -48,7 +48,7 @@ bot = ChatBot(
         {
             'import_path': 'chatterbot.logic.LowConfidenceAdapter',
             'threshold': 0.90,
-            'default_response': "น้องซอฟไม่เข้าใจ"
+            'default_response': ""
         }
     ],
     input_adapter="chatterbot.input.VariableInputTypeAdapter",
