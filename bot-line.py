@@ -197,6 +197,8 @@ def handle_message(event):
         else :
             sendMessage = bot.get_response(
                 event.message.text).text.encode('utf-8')
+            if sendMessage == "" :
+                return 
 
     line_bot_api.reply_message(
         event.reply_token,
